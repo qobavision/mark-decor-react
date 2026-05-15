@@ -1,0 +1,15 @@
+.header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(231, 233, 234, 0.08);
+}
+
+.header__inner {
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.header__brand {
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #1d9bf0;
+}/*# sourceMappingURL=Header.css.map */

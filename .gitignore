@@ -1,0 +1,22 @@
+# Frontend
+node_modules/
+dist/
+*.local
+
+# Backend
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Entorno
+.env
+.env.local
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
