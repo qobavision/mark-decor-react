@@ -17,6 +17,11 @@
   color: var(--color-primary);
 }
 
+/* ---- Cabecera del catálogo ---- */
+.contentHead {
+  scroll-margin-top: calc(var(--header-height) + var(--space-4));
+}
+
 /* ---- Cabecera de la categoría activa ---- */
 .head {
   display: flex;
@@ -24,7 +29,6 @@
   justify-content: space-between;
   gap: var(--space-4);
   margin-bottom: var(--space-6);
-  scroll-margin-top: calc(var(--header-height) + var(--space-4));
 }
 
 .title {

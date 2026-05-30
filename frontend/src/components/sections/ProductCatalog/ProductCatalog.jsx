@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { whatsappProductUrl } from '@/config/whatsapp'
 import styles from './ProductCatalog.module.css'
 
@@ -171,7 +171,7 @@ const trustItems = [
 export function ProductCatalog({ activeId, onSelect, scrollOnMount = false }) {
   const [internalId, setInternalId] = useState('roller')
   const [activeVideo, setActiveVideo] = useState(null)
-  const showcaseRef = useRef(null)
+  const headRef = useRef(null)
   const skipScrollRef = useRef(!scrollOnMount)
   const currentId = activeId ?? internalId
   const select = onSelect ?? setInternalId
@@ -179,11 +179,16 @@ export function ProductCatalog({ activeId, onSelect, scrollOnMount = false }) {
   const active = categories.find((c) => c.id === currentId) ?? categories[0]
   const others = categories.filter((c) => c.id !== active.id)
 
-  const scrollToShowcase = () => {
+  const scrollToHead = () => {
     requestAnimationFrame(() => {
-      showcaseRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      headRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     })
   }
+
+  useLayoutEffect(() => {
+    if (!scrollOnMount) return
+    headRef.current?.scrollIntoView({ behavior: 'auto', block: 'start' })
+  }, [scrollOnMount])
 
   useEffect(() => {
     setActiveVideo(null)
@@ -194,7 +199,7 @@ export function ProductCatalog({ activeId, onSelect, scrollOnMount = false }) {
       skipScrollRef.current = false
       return
     }
-    scrollToShowcase()
+    scrollToHead()
   }, [currentId])
 
   useEffect(() => {
@@ -213,17 +218,19 @@ export function ProductCatalog({ activeId, onSelect, scrollOnMount = false }) {
   return (
     <section className={styles.section} aria-labelledby="catalogo-title">
       <div className={styles.inner}>
-        <p className={styles.kicker}>Nuestros productos</p>
+        <div id="productos-contenido" className={styles.contentHead} ref={headRef}>
+          <p className={styles.kicker}>Nuestros productos</p>
 
-        <div className={styles.head} ref={showcaseRef}>
-          <h2 id="catalogo-title" className={styles.title}>
-            {active.name}
-          </h2>
-          <div className={styles.headActions}>
-            <a className={styles.headDownload} href={CATALOG_PDF} download>
-              <DownloadIcon />
-              Descargar catálogo
-            </a>
+          <div className={styles.head}>
+            <h2 id="catalogo-title" className={styles.title}>
+              {active.name}
+            </h2>
+            <div className={styles.headActions}>
+              <a className={styles.headDownload} href={CATALOG_PDF} download>
+                <DownloadIcon />
+                Descargar catálogo
+              </a>
+            </div>
           </div>
         </div>
 

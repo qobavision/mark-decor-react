@@ -18,9 +18,7 @@ export function ProductsPage() {
   useEffect(() => {
     if (catFromNav) {
       setProductCat(catFromNav)
-      return
     }
-    window.scrollTo(0, 0)
   }, [catFromNav])
 
   const handleCategory = (id) => {
@@ -35,7 +33,7 @@ export function ProductsPage() {
         <ProductCatalog
           activeId={productCat}
           onSelect={setProductCat}
-          scrollOnMount={Boolean(catFromNav)}
+          scrollOnMount
         />
       </main>
       <CtaBanner variant="choose" />

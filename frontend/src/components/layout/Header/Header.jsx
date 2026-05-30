@@ -28,6 +28,7 @@ function WhatsAppIcon() {
 }
 
 const contentScrollTargets = {
+  '/productos': 'productos-contenido',
   '/servicios': 'servicios-contenido',
   '/nosotros': 'nosotros-historia',
 }
