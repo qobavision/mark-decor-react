@@ -158,7 +158,28 @@
 
 @media (max-width: 980px) {
   .grid {
-    grid-template-columns: repeat(3, 1fr);
+    --card-width: min(68vw, 280px);
+
+    display: flex;
+    gap: var(--space-4);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: var(--space-2);
+    scrollbar-width: none;
+
+    /* Centra cada tarjeta en pantalla con peek a ambos lados */
+    padding-inline: max(var(--space-2), calc((100% - var(--card-width)) / 2));
+    scroll-padding-inline: max(var(--space-2), calc((100% - var(--card-width)) / 2));
+  }
+
+  .grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .card {
+    flex: 0 0 var(--card-width);
+    scroll-snap-align: center;
   }
 
   .badges {
@@ -178,23 +199,7 @@
   }
 
   .grid {
-    display: flex;
-    gap: var(--space-4);
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding-bottom: var(--space-2);
-    margin-inline: calc(var(--space-5) * -1);
-    padding-inline: var(--space-5);
-    scrollbar-width: none;
-  }
-
-  .grid::-webkit-scrollbar {
-    display: none;
-  }
-
-  .card {
-    flex: 0 0 min(72vw, 260px);
-    scroll-snap-align: start;
+    --card-width: min(78vw, 260px);
   }
 
   .badges {
