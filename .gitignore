@@ -1,22 +1,33 @@
-# Frontend
+# Dependencies
 node_modules/
+
+# Build
 dist/
+build/
 *.local
 
-# Backend
-venv/
-.venv/
-__pycache__/
-*.py[cod]
-.pytest_cache/
-.mypy_cache/
-
-# Entorno
+# Environment
 .env
-.env.local
+.env.*.local
 
-# IDE / OS
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor
 .idea/
-.vscode/
-.DS_Store
+.vscode/*
+!.vscode/extensions.json
+
+# OS
 Thumbs.db
+.DS_Store
+
+# Referencias de diseño (no van al sitio)
+/ChatGPT*.png
+/nosotros.png
+
+# Vite
+*.tsbuildinfo

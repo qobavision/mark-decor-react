@@ -1,0 +1,75 @@
+/**
+ * Mark Decor — design tokens (colores, tipografía, espaciado).
+ * Cambia los valores de :root para re-tematizar toda la web.
+ */
+:root {
+  /* Marca — paleta principal */
+  --color-primary: #e6357a; /* rosa / magenta (marca, CTAs) */
+  --color-primary-hover: #c92568;
+  --color-primary-soft: #fce4ef;
+
+  --color-secondary: #1b2a4a; /* azul marino (títulos, texto fuerte) */
+  --color-secondary-hover: #122038;
+
+  --color-accent: #e6357a; /* alias del rosa para detalles */
+  --color-accent-hover: #c92568;
+
+  --color-teal: #0a8490; /* turquesa para íconos destacados */
+
+  --color-bg: #ffffff;
+  --color-bg-elevated: #ffffff;
+  --color-surface: #f6f7fa;
+  --color-text: #1b2a4a;
+  --color-text-muted: #5c6573;
+  --color-border: #e3e6ec;
+
+  /* Texto sobre imágenes/fondos oscuros */
+  --color-on-dark: #ffffff;
+
+  /* Tipografía (coincide con index.html) */
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-script: 'Fraunces', Georgia, serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-4xl: 2.5rem;
+  --text-5xl: clamp(2.5rem, 5.5vw, 4rem);
+
+  --leading-tight: 1.1;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05);
+  --shadow-md: 0 8px 24px rgb(27 42 74 / 0.1);
+  --shadow-lg: 0 24px 48px rgb(27 42 74 / 0.14);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  --container-max: 1200px;
+  --header-height: 84px;
+
+  --transition-fast: 150ms ease;
+  --transition-base: 220ms ease;
+}

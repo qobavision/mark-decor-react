@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 64" fill="none" role="img" aria-label="Mark Decor">
+  <!-- Monograma MD con motivo de cortina -->
+  <g>
+    <!-- barra de cortina -->
+    <rect x="6" y="8" width="58" height="4" rx="2" fill="#e6357a"/>
+    <!-- pliegues -->
+    <path d="M12 13c0 9-3 16-3 24M20 13c0 9 3 16 3 24M30 13c0 9-3 16-3 24" stroke="#e6357a" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
+    <!-- MD -->
+    <text x="33" y="50" font-family="Fraunces, Georgia, serif" font-size="40" font-weight="700" fill="#e6357a" text-anchor="middle">MD</text>
+  </g>
+  <!-- Wordmark -->
+  <text x="74" y="30" font-family="Fraunces, Georgia, serif" font-size="22" font-weight="700" fill="#e6357a">Mark</text>
+  <text x="74" y="52" font-family="DM Sans, sans-serif" font-size="18" font-weight="600" letter-spacing="2" fill="#1b2a4a">DECOR</text>
+</svg>

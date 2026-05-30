@@ -1,0 +1,214 @@
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  height: var(--header-height);
+}
+
+.headerSolid {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgb(255 255 255 / 0.96);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 1px 0 var(--color-border);
+}
+
+.inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+}
+
+.logo {
+  height: 62px;
+  width: auto;
+}
+
+.navList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--space-8);
+}
+
+.nav a {
+  position: relative;
+  color: var(--color-secondary);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 2px;
+  background: var(--color-primary);
+  transition: width var(--transition-base);
+}
+
+.nav a:hover {
+  color: var(--color-primary);
+}
+
+.nav a:hover::after {
+  width: 100%;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-primary);
+  color: #fff !important;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgb(230 53 122 / 0.35);
+  transition:
+    background var(--transition-base),
+    transform var(--transition-fast);
+}
+
+.cta:hover {
+  background: var(--color-primary-hover);
+  color: #fff !important;
+  transform: translateY(-1px);
+}
+
+.ctaIcon {
+  flex-shrink: 0;
+}
+
+/* Botón hamburguesa (oculto en escritorio) */
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 0 10px;
+  background: rgb(255 255 255 / 0.85);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.burger span {
+  display: block;
+  height: 2.5px;
+  width: 100%;
+  border-radius: var(--radius-full);
+  background: var(--color-secondary);
+  transition:
+    transform var(--transition-base),
+    opacity var(--transition-fast);
+}
+
+.burgerOpen span:nth-child(1) {
+  transform: translateY(7.5px) rotate(45deg);
+}
+
+.burgerOpen span:nth-child(2) {
+  opacity: 0;
+}
+
+.burgerOpen span:nth-child(3) {
+  transform: translateY(-7.5px) rotate(-45deg);
+}
+
+/* Panel desplegable móvil */
+.mobilePanel {
+  position: absolute;
+  top: var(--header-height);
+  right: var(--space-4);
+  left: auto;
+  width: 50%;
+  max-width: 260px;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition:
+    opacity var(--transition-base),
+    transform var(--transition-base),
+    visibility var(--transition-base);
+}
+
+.mobileOpen {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.mobileList {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-2);
+}
+
+.mobileList a {
+  display: block;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  color: var(--color-secondary);
+  font-size: var(--text-base);
+  font-weight: 600;
+}
+
+.mobileList a:hover {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+@media (max-width: 860px) {
+  .nav {
+    display: none;
+  }
+
+  /* En móvil ocultamos el CTA del header: ya existe el botón flotante de WhatsApp */
+  .cta {
+    display: none;
+  }
+
+  .burger {
+    display: flex;
+  }
+
+  .inner {
+    padding: 0 var(--space-5);
+  }
+
+  .logo {
+    height: 52px;
+  }
+}

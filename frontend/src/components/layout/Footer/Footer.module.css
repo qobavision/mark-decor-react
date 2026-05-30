@@ -1,0 +1,190 @@
+.footer {
+  width: 100%;
+  background: #fdf4f8;
+}
+
+.inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-6) var(--space-10);
+  display: grid;
+  grid-template-columns: 1.5fr 1.1fr 0.9fr 1fr;
+  gap: var(--space-8);
+}
+
+.brandCol {
+  max-width: 280px;
+}
+
+.logo {
+  height: 58px;
+  width: auto;
+  margin-bottom: var(--space-4);
+}
+
+.tagline {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: var(--leading-relaxed);
+}
+
+.heading {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-secondary);
+}
+
+.contactList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.contactList li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.contactList svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: var(--color-teal);
+}
+
+.contactList a {
+  color: var(--color-text-muted);
+}
+
+.contactList a:hover {
+  color: var(--color-primary);
+}
+
+.socials {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-full);
+  background: transparent;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-secondary);
+  transition:
+    border-color var(--transition-base),
+    color var(--transition-base),
+    transform var(--transition-fast);
+}
+
+.social:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.social svg {
+  width: 20px;
+  height: 20px;
+}
+
+.claimBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-secondary);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition:
+    border-color var(--transition-base),
+    color var(--transition-base);
+}
+
+.claimBtn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.claimBtn svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.bar {
+  border-top: 1px solid rgb(230 53 122 / 0.18);
+}
+
+.barInner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.copy {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.legal {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-xs);
+}
+
+.legal a {
+  color: var(--color-text-muted);
+}
+
+.legal a:hover {
+  color: var(--color-primary);
+}
+
+.legal span {
+  color: var(--color-border);
+}
+
+@media (max-width: 900px) {
+  .inner {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+  }
+}
+
+@media (max-width: 560px) {
+  .inner {
+    grid-template-columns: 1fr;
+    padding: var(--space-10) var(--space-5);
+  }
+
+  .barInner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-4) var(--space-5);
+  }
+}

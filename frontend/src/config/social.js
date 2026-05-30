@@ -1,7 +1,5 @@
-/** Enlaces de la barra flotante de redes. WhatsApp: país + número sin + ni espacios. */
-export const socialFloatUrls = {
-  whatsapp: "https://wa.me/51999888777",
-  tiktok: "https://www.tiktok.com/@markdecor",
-  instagram: "https://www.instagram.com/markdecor",
-  facebook: "https://www.facebook.com/markdecor",
-};
+export const SOCIAL_LINKS = {
+  facebook: 'https://www.facebook.com/MarkDecoraciones',
+  instagram: 'https://www.instagram.com/markdecord/',
+  tiktok: 'https://www.tiktok.com/@markdecor2005',
+}
