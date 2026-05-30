@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './Products.module.css'
 
 const CAROUSEL_BREAKPOINT = 980
 const SCROLL_SPEED = 0.32
-const IDLE_RESUME_MS = 10000
-const SWIPE_THRESHOLD = 40
+const IDLE_RESUME_MS = 2500
 
 function ArrowIcon() {
   return (
@@ -97,52 +96,32 @@ function ProductCard({ product, tabIndex, ariaHidden = false }) {
 }
 
 export function Products() {
-  const [isManual, setIsManual] = useState(false)
   const viewportRef = useRef(null)
   const autoPausedRef = useRef(false)
   const isAutoScrollingRef = useRef(false)
   const idleTimerRef = useRef(null)
-  const touchStartRef = useRef(null)
 
-  const scheduleAutoResume = () => {
-    if (idleTimerRef.current) clearTimeout(idleTimerRef.current)
-    idleTimerRef.current = setTimeout(() => {
-      autoPausedRef.current = false
-      setIsManual(false)
-    }, IDLE_RESUME_MS)
+  const resumeAuto = () => {
+    autoPausedRef.current = false
   }
 
-  const enterManualMode = () => {
+  const pauseAuto = () => {
     autoPausedRef.current = true
-    setIsManual(true)
-    scheduleAutoResume()
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current)
+    idleTimerRef.current = setTimeout(resumeAuto, IDLE_RESUME_MS)
   }
 
-  const handleTouchStart = (e) => {
-    const t = e.touches[0]
-    touchStartRef.current = { x: t.clientX, y: t.clientY }
-    enterManualMode()
+  const handleTouchStart = () => {
+    pauseAuto()
   }
 
-  const handleTouchEnd = (e) => {
-    if (!touchStartRef.current) return
-    const t = e.changedTouches[0]
-    const dx = t.clientX - touchStartRef.current.x
-    const dy = t.clientY - touchStartRef.current.y
-    touchStartRef.current = null
-
-    if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dx) < Math.abs(dy)) return
-
-    const viewport = viewportRef.current
-    if (!viewport) return
-
-    viewport.scrollLeft += dx < 0 ? 120 : -120
-    scheduleAutoResume()
+  const handleTouchEnd = () => {
+    pauseAuto()
   }
 
   const handleScroll = () => {
     if (isAutoScrollingRef.current) return
-    enterManualMode()
+    pauseAuto()
   }
 
   useEffect(() => {
@@ -182,10 +161,7 @@ export function Products() {
     rafId = requestAnimationFrame(tick)
 
     const onMqChange = () => {
-      if (!mq.matches) {
-        autoPausedRef.current = false
-        setIsManual(false)
-      }
+      if (!mq.matches) resumeAuto()
     }
 
     mq.addEventListener('change', onMqChange)
@@ -212,7 +188,7 @@ export function Products() {
 
         <div
           ref={viewportRef}
-          className={`${styles.marqueeViewport} ${isManual ? styles.marqueeManual : ''}`}
+          className={styles.marqueeViewport}
           aria-label="Productos Mark Decor"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}

@@ -209,17 +209,6 @@
     width: max-content;
   }
 
-  .marqueeManual {
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    padding-inline: max(var(--space-2), calc((100% - var(--card-width)) / 2));
-    scroll-padding-inline: max(var(--space-2), calc((100% - var(--card-width)) / 2));
-  }
-
-  .marqueeManual .card {
-    scroll-snap-align: center;
-  }
-
   .marqueeViewport .card {
     flex: 0 0 var(--card-width);
   }
@@ -231,7 +220,6 @@
 }
 
 @media (max-width: 980px) and (prefers-reduced-motion: reduce) {
-  .marqueeManual,
   .marqueeViewport {
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
