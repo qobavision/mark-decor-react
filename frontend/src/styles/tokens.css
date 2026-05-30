@@ -26,9 +26,9 @@
   /* Texto sobre imágenes/fondos oscuros */
   --color-on-dark: #ffffff;
 
-  /* Tipografía (coincide con index.html) */
+  /* Tipografía — Fraunces (títulos) + Alan Sans (logo / resto) */
   --font-heading: 'Fraunces', Georgia, serif;
-  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-body: 'Alan Sans', system-ui, sans-serif;
   --font-script: 'Fraunces', Georgia, serif;
 
   --text-xs: 0.75rem;

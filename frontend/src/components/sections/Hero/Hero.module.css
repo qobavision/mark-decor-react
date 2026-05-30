@@ -5,6 +5,7 @@
   align-items: center;
   padding: calc(var(--header-height) + var(--space-8)) var(--space-6) var(--space-20);
   overflow: hidden;
+  touch-action: pan-y pinch-zoom;
 }
 
 .bg {
@@ -41,7 +42,7 @@
 
 .copy {
   max-width: 36rem;
-  animation: copyIn 600ms ease;
+  animation: copyIn 800ms ease;
 }
 
 @keyframes copyIn {
@@ -72,6 +73,24 @@
 }
 
 .script::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.08em;
+  height: 0.12em;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  transform: rotate(-1deg);
+}
+
+.underlined {
+  position: relative;
+  display: inline-block;
+  color: var(--color-secondary);
+}
+
+.underlined::after {
   content: '';
   position: absolute;
   left: 0;

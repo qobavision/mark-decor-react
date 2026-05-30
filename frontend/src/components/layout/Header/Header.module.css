@@ -30,11 +30,16 @@
 .brand {
   display: inline-flex;
   align-items: center;
+  align-self: center;
+  padding-top: var(--space-3);
 }
 
 .logo {
+  display: block;
   height: 62px;
   width: auto;
+  max-width: 200px;
+  object-fit: contain;
 }
 
 .navList {
@@ -210,5 +215,10 @@
 
   .logo {
     height: 52px;
+    max-width: 160px;
+  }
+
+  .brand {
+    padding-top: var(--space-2);
   }
 }

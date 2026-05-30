@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { whatsappQuoteUrl } from '@/config/whatsapp'
+import { LOGO_MAIN } from '@/config/brand'
 import styles from './Header.module.css'
 
 const nav = [
@@ -59,7 +60,7 @@ export function Header({ solid = false }) {
     <header className={`${styles.header} ${solid ? styles.headerSolid : ''}`}>
       <div className={styles.inner}>
         <a className={styles.brand} href="/" onClick={goTo('/')} aria-label="Mark Decor inicio">
-          <img className={styles.logo} src="/images/logo.svg" alt="Mark Decor" />
+          <img className={styles.logo} src={LOGO_MAIN} alt="Mark Decor" />
         </a>
 
         <nav className={styles.nav} aria-label="Principal">

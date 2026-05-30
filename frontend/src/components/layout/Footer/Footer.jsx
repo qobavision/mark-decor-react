@@ -7,6 +7,7 @@ import {
 } from '@/config/contact'
 import { SOCIAL_LINKS } from '@/config/social'
 import { whatsappQuoteUrl } from '@/config/whatsapp'
+import { LOGO_MAIN } from '@/config/brand'
 import styles from './Footer.module.css'
 
 function PhoneIcon() {
@@ -101,7 +102,7 @@ export function Footer() {
     <footer className={styles.footer}>
       <div className={styles.inner}>
         <div className={styles.brandCol}>
-          <img className={styles.logo} src="/images/logo.svg" alt="Mark Decor" />
+          <img className={styles.logo} src={LOGO_MAIN} alt="Mark Decor" />
           <p className={styles.tagline}>
             Transformamos tus espacios con estilo, funcionalidad y calidad.
           </p>

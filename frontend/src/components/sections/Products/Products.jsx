@@ -1,5 +1,11 @@
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './Products.module.css'
+
+const CAROUSEL_BREAKPOINT = 980
+const SCROLL_SPEED = 0.32
+const IDLE_RESUME_MS = 10000
+const SWIPE_THRESHOLD = 40
 
 function ArrowIcon() {
   return (
@@ -54,6 +60,8 @@ const products = [
   { label: 'Cortinas motorizadas', cat: 'motorizadas', image: '/images/cortinaMotorizada_pc_and_movil.png' },
 ]
 
+const marqueeProducts = [...products, ...products]
+
 const badges = [
   { icon: <MedalIcon />, l1: 'Materiales', l2: 'de alta calidad' },
   { icon: <ToolsIcon />, l1: 'Instalación', l2: 'profesional' },
@@ -61,7 +69,133 @@ const badges = [
   { icon: <ShieldIcon />, l1: 'Garantía', l2: 'asegurada' },
 ]
 
+function ProductCard({ product, tabIndex, ariaHidden = false }) {
+  const tabClass = tabIndex % 2 === 0 ? styles.tabPink : styles.tabTeal
+
+  return (
+    <li className={styles.card} aria-hidden={ariaHidden || undefined}>
+      <Link
+        className={styles.cardLink}
+        to="/productos"
+        state={{ cat: product.cat }}
+        aria-label={product.label}
+        tabIndex={ariaHidden ? -1 : undefined}
+      >
+        <div
+          className={styles.media}
+          style={{ backgroundImage: `url('${product.image}')` }}
+          role="img"
+          aria-label={product.label}
+        />
+        <span className={`${styles.tab} ${tabClass}`}>
+          <span className={styles.tabLabel}>{product.label}</span>
+          <ArrowIcon />
+        </span>
+      </Link>
+    </li>
+  )
+}
+
 export function Products() {
+  const [isManual, setIsManual] = useState(false)
+  const viewportRef = useRef(null)
+  const autoPausedRef = useRef(false)
+  const isAutoScrollingRef = useRef(false)
+  const idleTimerRef = useRef(null)
+  const touchStartRef = useRef(null)
+
+  const scheduleAutoResume = () => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current)
+    idleTimerRef.current = setTimeout(() => {
+      autoPausedRef.current = false
+      setIsManual(false)
+    }, IDLE_RESUME_MS)
+  }
+
+  const enterManualMode = () => {
+    autoPausedRef.current = true
+    setIsManual(true)
+    scheduleAutoResume()
+  }
+
+  const handleTouchStart = (e) => {
+    const t = e.touches[0]
+    touchStartRef.current = { x: t.clientX, y: t.clientY }
+    enterManualMode()
+  }
+
+  const handleTouchEnd = (e) => {
+    if (!touchStartRef.current) return
+    const t = e.changedTouches[0]
+    const dx = t.clientX - touchStartRef.current.x
+    const dy = t.clientY - touchStartRef.current.y
+    touchStartRef.current = null
+
+    if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dx) < Math.abs(dy)) return
+
+    const viewport = viewportRef.current
+    if (!viewport) return
+
+    viewport.scrollLeft += dx < 0 ? 120 : -120
+    scheduleAutoResume()
+  }
+
+  const handleScroll = () => {
+    if (isAutoScrollingRef.current) return
+    enterManualMode()
+  }
+
+  useEffect(() => {
+    return () => {
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current)
+    }
+  }, [])
+
+  useEffect(() => {
+    const viewport = viewportRef.current
+    if (!viewport) return
+
+    const mq = window.matchMedia(`(max-width: ${CAROUSEL_BREAKPOINT}px)`)
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    let rafId = 0
+
+    const loopScroll = () => {
+      const half = viewport.scrollWidth / 2
+      if (half > 0 && viewport.scrollLeft >= half) {
+        viewport.scrollLeft -= half
+      }
+    }
+
+    const tick = () => {
+      if (mq.matches && !reduceMotion.matches && !autoPausedRef.current) {
+        isAutoScrollingRef.current = true
+        viewport.scrollLeft += SCROLL_SPEED
+        loopScroll()
+        requestAnimationFrame(() => {
+          isAutoScrollingRef.current = false
+        })
+      }
+      rafId = requestAnimationFrame(tick)
+    }
+
+    rafId = requestAnimationFrame(tick)
+
+    const onMqChange = () => {
+      if (!mq.matches) {
+        autoPausedRef.current = false
+        setIsManual(false)
+      }
+    }
+
+    mq.addEventListener('change', onMqChange)
+
+    return () => {
+      cancelAnimationFrame(rafId)
+      mq.removeEventListener('change', onMqChange)
+    }
+  }, [])
+
   return (
     <section id="productos" className={styles.section} aria-labelledby="productos-title">
       <div className={styles.inner}>
@@ -70,31 +204,31 @@ export function Products() {
           Diseño y funcionalidad en <span className={styles.accent}>cada detalle</span>
         </h2>
 
-        <ul className={styles.grid}>
+        <ul className={styles.grid} aria-label="Productos Mark Decor">
           {products.map((p, i) => (
-            <li key={p.label} className={styles.card}>
-              <Link
-                className={styles.cardLink}
-                to="/productos"
-                state={{ cat: p.cat }}
-                aria-label={p.label}
-              >
-                <div
-                  className={styles.media}
-                  style={{ backgroundImage: `url('${p.image}')` }}
-                  role="img"
-                  aria-label={p.label}
-                />
-                <span
-                  className={`${styles.tab} ${i % 2 === 0 ? styles.tabPink : styles.tabTeal}`}
-                >
-                  <span className={styles.tabLabel}>{p.label}</span>
-                  <ArrowIcon />
-                </span>
-              </Link>
-            </li>
+            <ProductCard key={p.label} product={p} tabIndex={i} />
           ))}
         </ul>
+
+        <div
+          ref={viewportRef}
+          className={`${styles.marqueeViewport} ${isManual ? styles.marqueeManual : ''}`}
+          aria-label="Productos Mark Decor"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onScroll={handleScroll}
+        >
+          <ul className={styles.marqueeTrack}>
+            {marqueeProducts.map((p, i) => (
+              <ProductCard
+                key={`${p.cat}-${i}`}
+                product={p}
+                tabIndex={i % products.length}
+                ariaHidden={i >= products.length}
+              />
+            ))}
+          </ul>
+        </div>
 
         <ul className={styles.badges}>
           {badges.map((b) => (

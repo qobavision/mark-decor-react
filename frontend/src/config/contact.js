@@ -1,7 +1,7 @@
 export const PHONE_DISPLAY = '+51 989 387 410'
 export const PHONE_TEL = 'tel:+51989387410'
 
-export const EMAIL = 'multidecoracionesmarkdecor@gmail.com'
+export const EMAIL = 'markdecor10@gmail.com'
 export const ADDRESS = 'Jr. Las Cascadas 103 - La Molina, Lima, Perú'
 export const ADDRESS_SHORT = 'La Molina, Lima, Perú'
 export const HOURS = 'Lun - Sáb: 9:00 am - 8:00 pm'

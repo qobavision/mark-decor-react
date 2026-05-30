@@ -18,6 +18,7 @@ export function ServicesPage() {
       <Header />
       <main>
         <Hero
+          variant="services"
           onSelectCategory={(id) =>
             navigateFromHeroCategory(navigate, id, { replace: id === 'tapizado' })
           }

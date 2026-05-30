@@ -15,7 +15,7 @@ export function AboutPage() {
     <div className={styles.page}>
       <Header />
       <main>
-        <Hero onSelectCategory={(id) => navigateFromHeroCategory(navigate, id)} />
+        <Hero variant="about" onSelectCategory={(id) => navigateFromHeroCategory(navigate, id)} />
         <About scrollOnMount />
       </main>
       <CtaBanner />

@@ -31,7 +31,7 @@ export function ProductsPage() {
     <div className={styles.page}>
       <Header />
       <main>
-        <Hero onSelectCategory={handleCategory} />
+        <Hero variant="products" onSelectCategory={handleCategory} />
         <ProductCatalog
           activeId={productCat}
           onSelect={setProductCat}

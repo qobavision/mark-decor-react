@@ -1,40 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { whatsappQuoteUrl } from '@/config/whatsapp'
+import { HOME_SLIDES, SERVICES_SLIDES, ABOUT_SLIDES, PRODUCTS_SLIDES } from '@/config/heroSlides'
 import styles from './Hero.module.css'
 
-/**
- * Slides del banner. Para cambiar el fondo de cada uno, reemplaza `image`
- * (escritorio) e `imageMobile` (vertical) por las rutas en /images.
- */
-const slides = [
-  {
-    image: '/images/inicio_fondo_pc.png',
-    imageMobile: '/images/inicio_fondo_telefono.png',
-    titleTop: 'Crea espacios',
-    titleBottom: 'que te',
-    highlight: 'inspiren',
-    lead: 'Confección, venta e instalación de cortinas, persianas, rollers y más. Calidad, diseño y funcionalidad para cada ambiente.',
-  },
-  {
-    image: '/images/inicio_fondo_pc_2.png',
-    imageMobile: '/images/inicio_fondo_telefono_2.png',
-    titleTop: 'Dale nueva vida',
-    titleBottom: 'a tus',
-    highlight: 'muebles',
-    lead: 'Tapizado de sillones, sofás, sillas y cojines. Recuperamos tus muebles con telas y acabados de primera calidad.',
-  },
-  {
-    image: '/images/inicio_fondo_pc_3.png',
-    imageMobile: '/images/inicio_fondo_telefono_3.png',
-    titleTop: 'Controla la luz',
-    titleBottom: 'a tu',
-    highlight: 'medida',
-    lead: 'Cortinas roller, motorizadas y tapizado de muebles: privacidad, confort y estilo para tu hogar.',
-  },
-]
+const AUTOPLAY_MS = 11000
+const SWIPE_THRESHOLD = 48
 
-const AUTOPLAY_MS = 6000
+const SLIDES_BY_VARIANT = {
+  home: HOME_SLIDES,
+  services: SERVICES_SLIDES,
+  about: ABOUT_SLIDES,
+  products: PRODUCTS_SLIDES,
+}
 
 function WhatsAppIcon() {
   return (
@@ -119,11 +97,41 @@ const features = [
   },
 ]
 
-export function Hero({ onSelectCategory }) {
+/** @param {{ onSelectCategory?: (id: string) => void, variant?: 'home' | 'services' | 'about' | 'products' }} props */
+export function Hero({ onSelectCategory, variant = 'home' }) {
+  const slides = SLIDES_BY_VARIANT[variant] ?? HOME_SLIDES
+  const isCarousel = slides.length > 1
   const [index, setIndex] = useState(0)
   const slide = slides[index]
   const location = useLocation()
   const navigate = useNavigate()
+  const touchStart = useRef(null)
+
+  const goTo = (nextIndex) => {
+    setIndex(((nextIndex % slides.length) + slides.length) % slides.length)
+  }
+
+  const goNext = () => setIndex((i) => (i + 1) % slides.length)
+  const goPrev = () => setIndex((i) => (i - 1 + slides.length) % slides.length)
+
+  const handleTouchStart = (e) => {
+    if (!isCarousel) return
+    const t = e.touches[0]
+    touchStart.current = { x: t.clientX, y: t.clientY }
+  }
+
+  const handleTouchEnd = (e) => {
+    if (!touchStart.current) return
+    const t = e.changedTouches[0]
+    const dx = t.clientX - touchStart.current.x
+    const dy = t.clientY - touchStart.current.y
+    touchStart.current = null
+
+    if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dx) < Math.abs(dy)) return
+
+    if (dx < 0) goNext()
+    else goPrev()
+  }
 
   const viewProducts = (e) => {
     e.preventDefault()
@@ -135,15 +143,27 @@ export function Hero({ onSelectCategory }) {
   }
 
   useEffect(() => {
+    setIndex(0)
+  }, [variant])
+
+  useEffect(() => {
+    if (!isCarousel) return undefined
     const id = setInterval(
       () => setIndex((i) => (i + 1) % slides.length),
       AUTOPLAY_MS,
     )
     return () => clearInterval(id)
-  }, [index])
+  }, [index, isCarousel, slides.length])
 
   return (
-    <section id="inicio" className={styles.hero} aria-labelledby="hero-title">
+    <section
+      id={variant === 'home' ? 'inicio' : `${variant}-hero`}
+      className={styles.hero}
+      aria-labelledby="hero-title"
+      {...(isCarousel ? { 'aria-roledescription': 'carrusel' } : {})}
+      onTouchStart={isCarousel ? handleTouchStart : undefined}
+      onTouchEnd={isCarousel ? handleTouchEnd : undefined}
+    >
       <div
         className={styles.bg}
         style={{
@@ -157,9 +177,19 @@ export function Hero({ onSelectCategory }) {
       <div className={styles.inner}>
         <div key={index} className={styles.copy}>
           <h1 id="hero-title" className={styles.title}>
-            {slide.titleTop}
-            <br />
-            {slide.titleBottom} <span className={styles.script}>{slide.highlight}</span>
+            {slide.underlined ? (
+              <span className={styles.underlined}>{slide.titleTop}</span>
+            ) : slide.titleBottom ? (
+              <>
+                {slide.titleTop}
+                <br />
+                {slide.titleBottom} <span className={styles.script}>{slide.highlight}</span>
+              </>
+            ) : (
+              <>
+                {slide.titleTop} <span className={styles.script}>{slide.highlight}</span>
+              </>
+            )}
           </h1>
           <p className={styles.lead}>{slide.lead}</p>
           <div className={styles.actions}>
@@ -180,18 +210,20 @@ export function Hero({ onSelectCategory }) {
       </div>
 
       <div className={styles.bottomStack}>
-        <div className={styles.dots} role="tablist" aria-label="Cambiar diapositiva">
-          {slides.map((s, i) => (
-            <button
-              key={s.highlight}
-              type="button"
-              className={`${styles.dot} ${i === index ? styles.dotActive : ''}`}
-              aria-label={`Ir a la diapositiva ${i + 1}`}
-              aria-current={i === index}
-              onClick={() => setIndex(i)}
-            />
-          ))}
-        </div>
+        {isCarousel && (
+          <div className={styles.dots} role="tablist" aria-label="Cambiar diapositiva">
+            {slides.map((s, i) => (
+              <button
+                key={s.highlight || s.titleTop || i}
+                type="button"
+                className={`${styles.dot} ${i === index ? styles.dotActive : ''}`}
+                aria-label={`Ir a la diapositiva ${i + 1}`}
+                aria-current={i === index}
+                onClick={() => goTo(i)}
+              />
+            ))}
+          </div>
+        )}
 
         <ul className={styles.featureBar}>
           {features.map((f) => (
